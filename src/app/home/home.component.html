@@ -1,0 +1,14 @@
+@if (!loginDisplay) {
+<div>
+    <p class="welcome">Bienvenidos a este ejemplo de Angular 18 integrado con MSAL para usar Azure AD B2C</p>
+    <p>Este ejemplo demuestra cómo configurar MSAL Angular para iniciar sesión, cerrar sesión, proteger una ruta y obtener un token de acceso para un recurso protegido, como Microsoft Graph</p>
+    <p>Logeate para ver la informacion de tu perfil!.</p>
+</div>
+}
+
+@if (loginDisplay) {
+<div>
+    <p>Login correcto!</p>
+    <p>Solicita la información de tu perfil haciendo clic en Perfil</p>
+</div>
+}
