@@ -7,8 +7,19 @@
 }
 
 @if (loginDisplay) {
-<div>
+  <div>
     <p>Login correcto!</p>
     <p>Solicita la información de tu perfil haciendo clic en Perfil</p>
-</div>
+
+    <button (click)="obtenerProductos()">Obtener Productos</button>
+
+    <div *ngIf="productos.length > 0">
+      <h3>Lista de Productos:</h3>
+      <ul>
+        <li *ngFor="let prod of productos">
+          {{ prod.nombre }} - ${{ prod.precio }}
+        </li>
+      </ul>
+    </div>
+  </div>
 }

@@ -8,6 +8,7 @@ import {
   InteractionStatus,
 } from '@azure/msal-browser';
 import { filter } from 'rxjs/operators';
+import { DefaultBackendService } from '../service/default-backend.service'; 
 
 @Component({
   selector: 'app-home',
@@ -18,10 +19,12 @@ import { filter } from 'rxjs/operators';
 })
 export class HomeComponent implements OnInit {
   loginDisplay = false;
-
+    productos: any[] = [];
+  
   constructor(
     private authService: MsalService,
-    private msalBroadcastService: MsalBroadcastService
+    private msalBroadcastService: MsalBroadcastService,
+    private backendService: DefaultBackendService
   ) {}
 
   ngOnInit(): void {
@@ -44,6 +47,18 @@ export class HomeComponent implements OnInit {
       });
   }
 
+
+  obtenerProductos(): void {
+  this.backendService.consumirBackendGet().subscribe({
+    next: (response: any) => {
+      this.productos = response;
+      console.log('Productos:', this.productos);
+    },
+    error: (error: any) => {
+      console.error('Error al obtener productos:', error);
+    }
+  });
+}
   setLoginDisplay() {
     this.loginDisplay = this.authService.instance.getAllAccounts().length > 0;
   }
