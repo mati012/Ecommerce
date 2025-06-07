@@ -2,6 +2,8 @@ import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import {
   MsalService,
@@ -35,10 +37,12 @@ import { CommonModule } from '@angular/common';
     MatToolbarModule,
     MatButtonModule,
     MatMenuModule,
+    MatIconModule,
+    MatBadgeModule,
   ],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'Angular 18 Ejemplo utilizando - MSAL Angular v3';
+  title = 'TiendaApp - Ecommerce Moderno';
   isIframe = false;
   loginDisplay = false;
   private readonly _destroying$ = new Subject<void>();

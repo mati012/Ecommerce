@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import {
   AuthenticationResult,
@@ -8,18 +9,27 @@ import {
   InteractionStatus,
 } from '@azure/msal-browser';
 import { filter } from 'rxjs/operators';
-import { DefaultBackendService } from '../service/default-backend.service'; 
+import { DefaultBackendService } from '../service/default-backend.service';
+import { LucideAngularModule, ShoppingBag, Package, Shield, Zap, Heart, Users } from 'lucide-angular';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: [],
+  styleUrls: ['./home.component.css'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, LucideAngularModule],
 })
 export class HomeComponent implements OnInit {
   loginDisplay = false;
-    productos: any[] = [];
+  productos: any[] = [];
+  
+  // Lucide icons
+  readonly ShoppingBag = ShoppingBag;
+  readonly Package = Package;
+  readonly Shield = Shield;
+  readonly Zap = Zap;
+  readonly Heart = Heart;
+  readonly Users = Users;
   
   constructor(
     private authService: MsalService,
@@ -47,18 +57,18 @@ export class HomeComponent implements OnInit {
       });
   }
 
-
   obtenerProductos(): void {
-  this.backendService.consumirBackendGet().subscribe({
-    next: (response: any) => {
-      this.productos = response;
-      console.log('Productos:', this.productos);
-    },
-    error: (error: any) => {
-      console.error('Error al obtener productos:', error);
-    }
-  });
-}
+    this.backendService.consumirBackendGet().subscribe({
+      next: (response: any) => {
+        this.productos = response;
+        console.log('Productos:', this.productos);
+      },
+      error: (error: any) => {
+        console.error('Error al obtener productos:', error);
+      }
+    });
+  }
+  
   setLoginDisplay() {
     this.loginDisplay = this.authService.instance.getAllAccounts().length > 0;
   }

@@ -1,25 +1,259 @@
-@if (!loginDisplay) {
-<div>
-    <p class="welcome">Bienvenidos a este ejemplo de Angular 18 integrado con MSAL para usar Azure AD B2C</p>
-    <p>Este ejemplo demuestra cómo configurar MSAL Angular para iniciar sesión, cerrar sesión, proteger una ruta y obtener un token de acceso para un recurso protegido, como Microsoft Graph</p>
-    <p>Logeate para ver la informacion de tu perfil!.</p>
-</div>
-}
-
-@if (loginDisplay) {
-  <div>
-    <p>Login correcto!</p>
-    <p>Solicita la información de tu perfil haciendo clic en Perfil</p>
-
-    <button (click)="obtenerProductos()">Obtener Productos</button>
-
-    <div *ngIf="productos.length > 0">
-      <h3>Lista de Productos:</h3>
-      <ul>
-        <li *ngFor="let prod of productos">
-          {{ prod.nombre }} - ${{ prod.precio }}
-        </li>
-      </ul>
+<div class="gradient-bg">
+  <!-- Hero Section -->
+  <div class="container mx-auto px-4 py-12 md:py-24 hero-glow">
+    <div class="grid md:grid-cols-2 gap-8 relative">
+      <!-- Stacked Cards Section -->
+      <div class="md:order-2 relative flex items-center justify-center">
+        <div class="absolute -z-10 w-96 h-96 rounded-full bg-white/5 blur-3xl opacity-30 -top-20 -left-20 animate-pulse"></div>
+        <div class="absolute -z-10 w-64 h-64 rounded-full bg-white/3 blur-2xl opacity-40 -bottom-10 -right-10 animate-pulse" style="animation-delay: 2s;"></div>
+        
+        <!-- Stacked Cards Container -->
+        <div class="relative w-full max-w-lg">
+          <!-- Card 1 - Back -->
+          <div class="absolute inset-0 transform rotate-12 translate-x-8 translate-y-6 z-10">
+            <img
+              src="https://images.unsplash.com/photo-1614676471928-2ed0ad1061f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="Poleron Vintage"
+              class="w-full h-[450px] object-cover rounded-2xl shadow-2xl border border-white/20"
+            />
+          </div>
+          
+          <!-- Card 2 - Middle -->
+          <div class="absolute inset-0 transform -rotate-6 translate-x-4 translate-y-3 z-20">
+            <img
+              src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="Sudadera Minimalista"
+              class="w-full h-[450px] object-cover rounded-2xl shadow-2xl border border-white/20"
+            />
+          </div>
+          
+          <!-- Card 3 - Front -->
+          <div class="relative z-30 transform hover:scale-105 transition-transform duration-300">
+            <img
+              src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="Hoodie Premium"
+              class="w-full h-[450px] object-cover rounded-2xl shadow-2xl border border-white/20"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-2xl"></div>
+            <div class="absolute bottom-6 left-6 text-white">
+              <h3 class="text-2xl font-bold">Hoodie Premium</h3>
+              <p class="text-base opacity-90">Edición Limitada</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Content Section -->
+      <div class="md:order-1 flex flex-col justify-center">
+        <div class="flex flex-col justify-center space-y-8">
+          <!-- Brand Title -->
+          <h1 class="text-6xl md:text-7xl font-bold text-white leading-tight tracking-tighter">
+            Hoodie Store.
+          </h1>
+          
+          <!-- Navigation Categories -->
+          <ul class="space-y-3 tracking-tighter text-lg text-white/90">
+            <li class="transform transition-all duration-300 hover:opacity-100 hover:-translate-y-1 opacity-80">
+              <a [routerLink]="['/products']" class="cursor-pointer hover:underline">
+                Polerones y Hoodies
+              </a>
+            </li>
+            <li class="transform transition-all duration-300 hover:opacity-100 hover:-translate-y-1 opacity-80">
+              <a [routerLink]="['/categories']" class="cursor-pointer hover:underline">
+                Ropa Deportiva
+              </a>
+            </li>
+            <li class="transform transition-all duration-300 hover:opacity-100 hover:-translate-y-1 opacity-80">
+              <a [routerLink]="['/products']" class="cursor-pointer hover:underline">
+                Accesorios
+              </a>
+            </li>
+            <li class="transform transition-all duration-300 hover:opacity-100 hover:-translate-y-1 opacity-80">
+              <a [routerLink]="['/categories']" class="cursor-pointer hover:underline">
+                Calzado
+              </a>
+            </li>
+            <li class="transform transition-all duration-300 hover:opacity-100 hover:-translate-y-1 opacity-80">
+              <a [routerLink]="['/products']" class="cursor-pointer hover:underline">
+                Temporada
+              </a>
+            </li>
+          </ul>
+          
+          <!-- Collection Info -->
+          <div>
+            <p class="text-lg text-white/95 max-w-md tracking-tight leading-relaxed">
+              <span class="underline cursor-pointer">"Urban Comfort"</span>
+              presenta una colección que redefine el streetwear moderno.
+              Polerones premium confeccionados con las mejores telas, 
+              diseñados para quienes buscan estilo y comodidad sin comprometer la calidad.
+            </p>
+            
+            @if (loginDisplay) {
+              <div class="mt-6 space-y-3">
+                <button 
+                  (click)="obtenerProductos()" 
+                  class="text-sm text-blue-400 hover:text-blue-300 underline transition-colors">
+                  Conectar con catálogo en vivo
+                </button>
+                
+                @if (productos.length > 0) {
+                  <div class="bg-green-900/50 backdrop-blur-sm p-4 rounded-lg border border-green-500/30">
+                    <p class="text-sm text-green-300 font-medium mb-2">
+                      Catálogo conectado: {{ productos.length }} productos disponibles
+                    </p>
+                    <div class="max-h-32 overflow-y-auto space-y-1">
+                      @for (prod of productos.slice(0, 3); track prod.nombre) {
+                        <div class="text-xs text-green-200">
+                          {{ prod.nombre }} - ${{ prod.precio }}
+                        </div>
+                      }
+                      @if (productos.length > 3) {
+                        <div class="text-xs text-green-300 italic">
+                          y {{ productos.length - 3 }} productos más...
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-}
+
+  <!-- Bento Grid Gallery Section -->
+  <div class="py-16 relative">
+    <!-- Background glow effects -->
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-white/2 rounded-full blur-3xl opacity-50"></div>
+    <div class="absolute bottom-0 right-1/4 w-80 h-80 bg-white/1 rounded-full blur-2xl opacity-40"></div>
+    
+    <div class="container mx-auto px-4 relative z-10">
+      <!-- Large Collection Title -->
+      <div class="mb-16">
+        <h2 class="text-6xl md:text-7xl font-bold text-white leading-tight tracking-tighter">
+          Nuestra
+          <br>
+          <span class="text-white/70">Colección.</span>
+        </h2>
+        <p class="text-xl text-white/60 mt-6 max-w-2xl">
+          Descubre piezas únicas que combinan estilo contemporáneo con la comodidad que buscas
+        </p>
+      </div>
+      
+      <!-- Bento Grid Layout -->
+      <div class="grid grid-cols-12 gap-4 max-w-6xl mx-auto">
+        <!-- Large Item - Spans 6 columns, 2 rows -->
+        <div class="col-span-12 md:col-span-6 md:row-span-2 group cursor-pointer">
+          <div class="relative overflow-hidden rounded-2xl shadow-2xl h-[400px] md:h-[500px] backdrop-blur-sm border border-white/10">
+            <img
+              src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="Hoodie Oversized Featured"
+              class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:from-black/60 transition-colors duration-300"></div>
+            <div class="absolute bottom-6 left-6 text-white">
+              <h3 class="text-3xl font-bold mb-2">Hoodie Premium</h3>
+              <p class="text-lg opacity-90 mb-2">Edición Limitada</p>
+              <div class="text-2xl font-bold">$89.990</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Medium Item - Spans 6 columns, 1 row -->
+        <div class="col-span-12 md:col-span-6 group cursor-pointer">
+          <div class="relative overflow-hidden rounded-2xl shadow-2xl h-[240px] backdrop-blur-sm border border-white/10">
+            <img
+              src="https://images.unsplash.com/photo-1571455786673-9d9d6c194f90?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="Hoodie Streetwear"
+              class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent group-hover:from-black/50 transition-colors duration-300"></div>
+            <div class="absolute bottom-4 left-4 text-white">
+              <h3 class="text-xl font-semibold mb-1">Hoodie Streetwear</h3>
+              <p class="text-sm opacity-90">Urban style</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Small Item - Spans 3 columns -->
+        <div class="col-span-6 md:col-span-3 group cursor-pointer">
+          <div class="relative overflow-hidden rounded-2xl shadow-2xl h-[240px] backdrop-blur-sm border border-white/10">
+            <img
+              src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="Poleron Deportivo"
+              class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent group-hover:from-black/50 transition-colors duration-300"></div>
+            <div class="absolute bottom-4 left-4 text-white">
+              <h3 class="text-lg font-semibold mb-1">Deportivo</h3>
+              <p class="text-xs opacity-90">Active wear</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Small Item - Spans 3 columns -->
+        <div class="col-span-6 md:col-span-3 group cursor-pointer">
+          <div class="relative overflow-hidden rounded-2xl shadow-2xl h-[240px] backdrop-blur-sm border border-white/10">
+            <img
+              src="https://images.unsplash.com/photo-1574180566232-aaad1b5b8450?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="Hoodie Premium Collection"
+              class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent group-hover:from-black/50 transition-colors duration-300"></div>
+            <div class="absolute bottom-4 left-4 text-white">
+              <h3 class="text-lg font-semibold mb-1">Premium</h3>
+              <p class="text-xs opacity-90">Calidad máxima</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wide Item - Spans 8 columns -->
+        <div class="col-span-12 md:col-span-8 group cursor-pointer">
+          <div class="relative overflow-hidden rounded-2xl shadow-2xl h-[300px] backdrop-blur-sm border border-white/10">
+            <img
+              src="https://images.unsplash.com/photo-1603252109303-2751441dd157?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="Colección Urbana"
+              class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+            />
+            <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent group-hover:from-black/60 transition-colors duration-300"></div>
+            <div class="absolute bottom-6 left-6 text-white">
+              <h3 class="text-2xl font-bold mb-2">Línea Urbana</h3>
+              <p class="text-base opacity-90 mb-2">Estilo y comodidad</p>
+              <div class="text-lg font-semibold">Desde $45.990</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tall Item - Spans 4 columns -->
+        <div class="col-span-12 md:col-span-4 group cursor-pointer">
+          <div class="relative overflow-hidden rounded-2xl shadow-2xl h-[300px] backdrop-blur-sm border border-white/10">
+            <img
+              src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="Edición Especial"
+              class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent group-hover:from-black/60 transition-colors duration-300"></div>
+            <div class="absolute bottom-4 left-4 text-white">
+              <h3 class="text-xl font-semibold mb-1">Edición Especial</h3>
+              <p class="text-sm opacity-90">Diseño único</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA Button -->
+      <div class="text-center mt-12">
+        <a [routerLink]="['/products']" 
+           class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm text-white border border-white/20 px-8 py-4 rounded-lg hover:bg-white/20 transition-all duration-300 text-lg font-medium">
+          <span>Ver Toda la Colección</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

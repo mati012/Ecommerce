@@ -37,6 +37,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatCardModule } from '@angular/material/card';
 import { authInterceptorProvider } from './interceptor/auth-interceptor.interceptor';
 
 /**
@@ -134,7 +137,10 @@ export const appConfig: ApplicationConfig = {
       MatButtonModule,
       MatToolbarModule,
       MatListModule,
-      MatMenuModule
+      MatMenuModule,
+      MatIconModule,
+      MatBadgeModule,
+      MatCardModule
     ),
     provideNoopAnimations(),
     provideHttpClient(withInterceptorsFromDi(), withFetch(), withInterceptors([authInterceptorProvider])),
