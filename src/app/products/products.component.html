@@ -1,17 +1,17 @@
-<div class="w-full min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 py-20">
+<div class="w-full py-20">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Header -->
     <div class="text-center mb-16">
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6">
-        Nuestros <span class="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Productos</span>
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 tracking-tighter">
+        Nuestros <span class="text-white/70">Productos.</span>
       </h1>
-      <p class="text-xl text-gray-300 max-w-3xl mx-auto">Descubre nuestra selección de productos de alta calidad</p>
+      <p class="text-xl text-white/60 max-w-3xl mx-auto">Descubre nuestra selección de productos de alta calidad</p>
     </div>
 
     <!-- Loading State -->
     @if (isLoading) {
       <div class="flex justify-center items-center py-20">
-        <div class="glass-card">
+        <div class="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-8">
           <div class="flex items-center space-x-4">
             <div class="animate-spin w-8 h-8 border-4 border-white/30 border-t-white rounded-full"></div>
             <span class="text-white text-lg">Cargando productos...</span>
@@ -23,11 +23,11 @@
     <!-- Error State -->
     @if (hasError && !isLoading) {
       <div class="flex justify-center">
-        <div class="glass-card max-w-md text-center bg-red-500/10 border-red-500/30">
+        <div class="backdrop-blur-xl bg-red-500/10 border border-red-500/30 rounded-2xl p-8 max-w-md text-center">
           <div class="text-6xl mb-4">⚠️</div>
           <h3 class="text-2xl font-semibold text-white mb-4">Error al cargar productos</h3>
-          <p class="text-gray-300 mb-6">{{ errorMessage }}</p>
-          <button (click)="loadProducts()" class="glass-button-primary flex items-center space-x-2 mx-auto">
+          <p class="text-white/70 mb-6">{{ errorMessage }}</p>
+          <button (click)="loadProducts()" class="bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white px-6 py-3 rounded-lg transition-all duration-300 flex items-center space-x-2 mx-auto">
             <span class="text-xl">🔄</span>
             <span>Reintentar</span>
           </button>
@@ -39,48 +39,51 @@
     @if (!isLoading && !hasError && products.length > 0) {
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
         @for (product of products; track product.id) {
-          <div class="glass-card group hover:scale-105 transition-all duration-300 cursor-pointer">
-            <!-- Product Image -->
-            <div class="w-full h-48 bg-gradient-to-br from-gray-700 to-gray-800 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
-              @if (product.imagen) {
-                <img [src]="product.imagen" [alt]="product.nombre" 
-                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-              } @else {
-                <div class="text-6xl">📦</div>
-              }
-            </div>
-
-            <!-- Product Info -->
-            <div class="space-y-3">
-              <h3 class="text-xl font-semibold text-white group-hover:text-gray-200 transition-colors">
-                {{ product.nombre }}
-              </h3>
-              
-              @if (product.descripcion) {
-                <p class="text-gray-400 text-sm line-clamp-2">
-                  {{ product.descripcion }}
-                </p>
-              }
-              
-              <div class="flex items-center justify-between">
-                <span class="text-2xl font-bold text-green-400">
-                  ${{ product.precio | number:'1.0-0' }}
-                </span>
-                
-                <button class="glass-button-primary text-sm px-4 py-2 flex items-center space-x-2">
-                  <span class="text-lg">🛒</span>
-                  <span>Agregar</span>
-                </button>
+          <div class="group cursor-pointer">
+            <div class="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105 shadow-2xl">
+              <!-- Product Image -->
+              <div class="w-full h-48 bg-gradient-to-br from-white/10 to-white/5 rounded-xl mb-6 flex items-center justify-center overflow-hidden border border-white/10">
+                @if (product.imagen) {
+                  <img [src]="product.imagen" [alt]="product.nombre" 
+                       class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                } @else {
+                  <div class="text-6xl opacity-50">📦</div>
+                }
               </div>
-              
-              @if (product.categoria) {
-                <div class="flex items-center space-x-2">
-                  <span class="text-xs text-gray-500">Categoría:</span>
-                  <span class="px-2 py-1 bg-white/10 rounded-full text-xs text-gray-300">
-                    {{ product.categoria }}
+
+              <!-- Product Info -->
+              <div class="space-y-4">
+                <h3 class="text-xl font-bold text-white group-hover:text-white/90 transition-colors line-clamp-2">
+                  {{ product.nombre }}
+                </h3>
+                
+                @if (product.descripcion) {
+                  <p class="text-white/60 text-sm line-clamp-2 leading-relaxed">
+                    {{ product.descripcion }}
+                  </p>
+                }
+                
+                @if (product.categoria) {
+                  <div class="inline-block">
+                    <span class="px-3 py-1 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-xs text-white/80 font-medium">
+                      {{ product.categoria }}
+                    </span>
+                  </div>
+                }
+                
+                <div class="flex items-center justify-between pt-2">
+                  <span class="text-2xl font-bold text-white">
+                    ${{ product.precio | number:'1.0-0' }}
                   </span>
+                  
+                  <button class="bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white px-4 py-2 rounded-lg transition-all duration-300 flex items-center space-x-2 hover:scale-105 active:scale-95">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.8 5.2a1 1 0 0 0 1 1.3h9.6M9 19.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zM20 19.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
+                    </svg>
+                    <span class="text-sm font-medium">Agregar</span>
+                  </button>
                 </div>
-              }
+              </div>
             </div>
           </div>
         }
@@ -90,11 +93,11 @@
     <!-- Empty State -->
     @if (!isLoading && !hasError && products.length === 0) {
       <div class="flex justify-center">
-        <div class="glass-card max-w-md text-center">
-          <div class="text-6xl mb-6">📭</div>
+        <div class="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8 max-w-md text-center">
+          <div class="text-6xl mb-6 opacity-50">📭</div>
           <h3 class="text-2xl font-semibold text-white mb-4">No hay productos disponibles</h3>
-          <p class="text-gray-300 mb-6">Parece que no tenemos productos en este momento. Vuelve pronto.</p>
-          <button (click)="loadProducts()" class="glass-button-primary flex items-center space-x-2 mx-auto">
+          <p class="text-white/60 mb-6">Parece que no tenemos productos en este momento. Vuelve pronto.</p>
+          <button (click)="loadProducts()" class="bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white px-6 py-3 rounded-lg transition-all duration-300 flex items-center space-x-2 mx-auto">
             <span class="text-xl">🔄</span>
             <span>Actualizar</span>
           </button>
