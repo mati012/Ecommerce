@@ -10,7 +10,7 @@ export class ApiClientService {
   }
 
   get baseUrl(): string {
-    return this.getEnvVar('API_BASE_URL') || 'https://97mnvqtra8.execute-api.us-east-1.amazonaws.com/DEV';
+    return this.getEnvVar('API_BASE_URL') || 'https://97mnvqtra8.execute-api.us-east-1.amazonaws.com/DEV/';
   }
 
   get endpoints() {
