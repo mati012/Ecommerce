@@ -11,14 +11,14 @@
     margin: 0;
     padding: 0;
   }
-  
+
   html {
     height: 100%;
     width: 100%;
     overflow-x: hidden;
-  }
-  
-  body {
+}
+
+body {
     @apply min-h-screen;
     height: 100%;
     width: 100%;

@@ -44,7 +44,7 @@
           </button>
 
           <!-- Login/Logout -->
-          @if (!loginDisplay) {
+  @if (!loginDisplay) {
             <button 
               (click)="loginPopup()" 
               class="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center space-x-2">
@@ -55,13 +55,13 @@
             </button>
           }
 
-          @if (loginDisplay) {
+  @if (loginDisplay) {
             <div class="flex items-center space-x-3">
-              <a [routerLink]="['/profile']" class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition-colors flex items-center space-x-2">
+              <a [routerLink]="['/dashboard']" class="bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition-colors flex items-center space-x-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
                 </svg>
-                <span class="hidden sm:inline">Perfil</span>
+                <span class="hidden sm:inline">Dashboard</span>
               </a>
               
               <button 
@@ -81,9 +81,9 @@
 
   <main class="flex-1 pt-16 w-full bg-black">
     <div class="w-full">
-      @if (!isIframe) {
-        <router-outlet></router-outlet>
-      }
+  @if (!isIframe) {
+  <router-outlet></router-outlet>
+  }
     </div>
   </main>
 
@@ -126,8 +126,8 @@
               </a>
             </li>
             <li>
-              <a [routerLink]="['/profile']" class="text-white/70 hover:text-white transition-colors">
-                Perfil
+              <a [routerLink]="['/dashboard']" class="text-white/70 hover:text-white transition-colors">
+                Dashboard
               </a>
             </li>
           </ul>

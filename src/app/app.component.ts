@@ -162,6 +162,9 @@ export class AppComponent implements OnInit, OnDestroy {
             next: (tokenResponse) => {
               localStorage.setItem('jwt', tokenResponse.idToken); // Guarda el token en el localStorage
               console.log('ID token guardado en localStorage:', tokenResponse.idToken);
+              
+              // Redirigir al dashboard después del login exitoso
+              window.location.href = '/dashboard';
             },
             error: (error) => {
               console.error('Error obteniendo el token de acceso:', error);
@@ -179,6 +182,9 @@ export class AppComponent implements OnInit, OnDestroy {
             next: (tokenResponse) => {
               localStorage.setItem('jwt', tokenResponse.accessToken);
               console.log('ID token guardado en localStorage:', tokenResponse.accessToken);
+              
+              // Redirigir al dashboard después del login exitoso
+              window.location.href = '/dashboard';
             },
             error: (error) => {
               console.error('Error obteniendo el token de acceso:', error);
