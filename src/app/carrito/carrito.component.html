@@ -1,79 +1,155 @@
-<div class="products-container">
-  <div class="products-content">
-    <!-- Header del carrito -->
-    <div class="products-header">
-      <h1>Tu Carrito de Compras</h1>
-      <p>Revisa y gestiona los productos seleccionados antes de finalizar tu compra</p>
+<div class="min-h-screen gradient-bg">
+  <div class="container-centered py-8">
+    
+    <!-- Header mejorado -->
+    <div class="text-center mb-12">
+      <div class="flex items-center justify-center mb-4">
+        <span class="text-4xl mr-3">🛒</span>
+        <h1 class="text-4xl md:text-5xl font-bold text-white">Tu Carrito de Compras</h1>
+      </div>
+      <p class="text-xl text-white/70 max-w-2xl mx-auto">
+        Revisa y gestiona los productos seleccionados antes de finalizar tu compra
+      </p>
+    </div>
+
+    <!-- Botón de regreso -->
+    <div class="mb-8">
+      <button 
+        routerLink="/products" 
+        class="flex items-center text-white/80 hover:text-white transition-colors duration-200"
+      >
+        <span class="text-xl mr-2">←</span>
+        Volver a Productos
+      </button>
     </div>
 
     <!-- Si hay ítems en el carrito -->
-    <div *ngIf="cartItems.length > 0; else emptyCart">
-  <!-- Contenedor flex centrado -->
-  <div class="flex flex-wrap justify-center gap-6 lg:gap-8">
-    <div
-      *ngFor="let item of cartItems"
-      class="product-card flex-shrink-0 w-72"
-    >
-      <!-- Imagen del producto -->
-      <div class="product-image">
-        <img
-          *ngIf="item.imagen; else noImage"
-          [src]="item.imagen"
-          [alt]="item.nombre"
-        />
-        <ng-template #noImage>
-          <div class="no-image">📦</div>
-        </ng-template>
-      </div>
-
-      <!-- Detalle del producto -->
-      <div class="product-content">
-        <h3 class="product-title">{{ item.nombre }}</h3>
-        <p class="product-description line-clamp-2">
-          {{ item.descripcion }}
-        </p>
-
-        <div class="product-footer">
-          <div>
-            <span class="product-price">
-              ${{ item.precio | number:'1.0-0' }}
-            </span>
-            <span class="mx-2">x {{ item.cantidad }}</span>
+    <div *ngIf="cartItems.length > 0; else emptyCart" class="space-y-8">
+      
+      <!-- Resumen del carrito -->
+      <div class="glass-card">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="text-center md:text-left mb-4 md:mb-0">
+            <h2 class="text-2xl font-bold text-white mb-2">
+              {{ getTotalItems() }} {{ getTotalItems() === 1 ? 'producto' : 'productos' }}
+            </h2>
+            <p class="text-white/70">En tu carrito</p>
           </div>
-          <button (click)="removeFromCart(item)" class="add-button">
-            🗑️ Quitar
-          </button>
-        </div>
-
-        <div class="mt-2 font-semibold">
-          Subtotal: ${{ (item.precio * item.cantidad) | number:'1.0-0' }}
+          <div class="text-center md:text-right">
+            <p class="text-white/70 text-sm">Total a pagar</p>
+            <p class="text-3xl font-bold text-white">${{ getTotal() | number:'1.0-0' }}</p>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Total y botón de checkout -->
-  <div class="mt-8 flex justify-end items-center space-x-6">
-    <div class="text-xl font-bold">
-      Total: ${{ getTotal() | number:'1.0-0' }}
-    </div>
-    <button (click)="checkout()" class="add-button">
-      Finalizar Compra
-    </button>
-  </div>
-</div>
+      <!-- Lista de productos -->
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div 
+          *ngFor="let item of cartItems; trackBy: trackByItemId" 
+          class="cart-item glass-card"
+        >
+          <!-- Imagen del producto -->
+          <div class="mb-4">
+            <div class="aspect-square rounded-xl overflow-hidden bg-white/10 flex items-center justify-center">
+              <img
+                *ngIf="item.imagen; else noImage"
+                [src]="item.imagen"
+                [alt]="item.nombre"
+                class="w-full h-full object-cover"
+              />
+              <ng-template #noImage>
+                <div class="text-4xl">📦</div>
+              </ng-template>
+            </div>
+          </div>
 
-    <!-- Estado vacío -->
+          <!-- Información del producto -->
+          <div class="space-y-3">
+            <h3 class="text-xl font-bold text-white line-clamp-2">{{ item.nombre }}</h3>
+            <p class="text-white/70 text-sm line-clamp-2" *ngIf="item.descripcion">
+              {{ item.descripcion }}
+            </p>
+            
+            <!-- Precio unitario -->
+            <div class="text-lg font-semibold text-white">
+              ${{ item.precio | number:'1.0-0' }}
+            </div>
+
+            <!-- Controles de cantidad -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <button 
+                  (click)="decrementQuantity(item)"
+                  class="quantity-control w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-all duration-200"
+                  [disabled]="item.cantidad <= 1"
+                >
+                  <span class="text-white text-lg">−</span>
+                </button>
+                
+                <span class="text-white font-bold text-lg min-w-[2rem] text-center">
+                  {{ item.cantidad }}
+                </span>
+                
+                <button 
+                  (click)="incrementQuantity(item)"
+                  class="quantity-control w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-all duration-200"
+                >
+                  <span class="text-white text-lg">+</span>
+                </button>
+              </div>
+
+              <!-- Botón eliminar -->
+              <button 
+                (click)="removeFromCart(item)"
+                class="quantity-control p-2 rounded-full bg-red-500/20 hover:bg-red-500/30 flex items-center justify-center transition-all duration-200"
+              >
+                <span class="text-red-300 text-lg">🗑️</span>
+              </button>
+            </div>
+
+            <!-- Subtotal -->
+            <div class="pt-3 border-t border-white/20">
+              <div class="flex justify-between items-center">
+                <span class="text-white/70">Subtotal:</span>
+                <span class="text-xl font-bold text-white">
+                  ${{ (item.precio * item.cantidad) | number:'1.0-0' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón de checkout -->
+      <div class="flex justify-center pt-8">
+        <button 
+          (click)="checkout()"
+          [disabled]="isCheckingOut"
+          class="checkout-button flex items-center space-x-3 glass-button-primary text-lg font-bold py-4 px-8 rounded-2xl disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span class="text-xl" [class.animate-spin]="isCheckingOut">
+            {{ isCheckingOut ? '✅' : '💳' }}
+          </span>
+          <span>{{ isCheckingOut ? 'Procesando...' : 'Finalizar Compra' }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Estado vacío mejorado -->
     <ng-template #emptyCart>
-      <div class="empty-state text-center">
-        <div class="empty-icon">🛒</div>
-        <h3>Tu carrito está vacío</h3>
-        <p>Añade productos para comenzar.</p>
+      <div class="text-center py-20">
+        <div class="empty-cart-animation mb-8">
+          <span class="text-8xl text-white/50">🛒</span>
+        </div>
+        <h3 class="text-3xl font-bold text-white mb-4">Tu carrito está vacío</h3>
+        <p class="text-xl text-white/70 mb-8 max-w-md mx-auto">
+          Explora nuestra colección de productos y encuentra algo increíble para ti
+        </p>
         <button
           routerLink="/products"
-          class="add-button mt-4 mx-auto block"
+          class="glass-button-primary text-lg font-bold py-4 px-8 rounded-2xl transition-all duration-300 hover:scale-105"
         >
-          Ver Productos
+          Explorar Productos
         </button>
       </div>
     </ng-template>

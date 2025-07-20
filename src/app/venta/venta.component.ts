@@ -30,12 +30,53 @@ interface CartItem extends Product {
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
+    
+    .success-animation {
+      animation: successPulse 2s ease-in-out;
+    }
+    
+    @keyframes successPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .product-card {
+      transition: all 0.3s ease;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+    
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+      border-radius: 50%;
+      animation: confetti-fall 3s linear infinite;
+    }
+    
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
   `]
 })
 export class VentaComponent implements OnInit {
   idCarrito: number | null = null;
   cartItems: CartItem[] = [];
   totalVenta: number = 0;
+  showConfetti = true;
+  currentDate = new Date();
 
   constructor(
     private router: Router,
@@ -45,6 +86,10 @@ export class VentaComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCart();
+    // Ocultar confeti después de 3 segundos
+    setTimeout(() => {
+      this.showConfetti = false;
+    }, 3000);
   }
 
   /**  
@@ -84,6 +129,17 @@ export class VentaComponent implements OnInit {
   /** Si quieres recalcular en vuelo */
   getTotal(): number {
     return this.totalVenta;
+  }
+
+  /** Calcula el número total de ítems */
+  getTotalItems(): number {
+    return this.cartItems
+      .reduce((sum, item) => sum + item.cantidad, 0);
+  }
+
+  /** TrackBy function para optimizar el rendimiento */
+  trackByItemId(index: number, item: CartItem): number {
+    return item.id;
   }
 
   /** Envía el objeto { idCarrito, totalVenta } a tu endpoint para encolar la venta */

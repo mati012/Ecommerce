@@ -1,59 +1,139 @@
-<div class="products-container">
-  <div class="products-content">
-    <!-- Header de la venta -->
-    <div class="products-header text-center mb-16">
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4">
-        Detalle de la Venta
-      </h1>
-      <p class="text-xl text-white/60 max-w-3xl mx-auto">
-        Gracias por tu compra. Aquí los productos adquiridos:
+<div class="min-h-screen gradient-bg relative overflow-hidden">
+  
+  <!-- Confeti animado -->
+  <div *ngIf="showConfetti" class="absolute inset-0 pointer-events-none">
+    <div *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" 
+         class="confetti"
+         [style.left]="(i * 10) + '%'"
+         [style.animation-delay]="(i * 0.3) + 's'">
+    </div>
+  </div>
+
+  <div class="container-centered py-8 relative z-10">
+    
+    <!-- Header de éxito -->
+    <div class="text-center mb-16 success-animation">
+      <div class="flex items-center justify-center mb-6">
+        <div class="bg-green-500 rounded-full p-4 mr-4">
+          <span class="text-4xl text-white">✅</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-white">¡Compra Exitosa!</h1>
+      </div>
+      <p class="text-2xl text-white/80 max-w-3xl mx-auto mb-4">
+        ¡Gracias por tu compra! Tu pedido ha sido procesado correctamente.
       </p>
+      <div class="glass-card inline-block">
+        <p class="text-white/90 text-lg">
+          <strong>Número de Orden:</strong> #{{ idCarrito }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Botón de regreso -->
+    <div class="mb-12 text-center">
+      <button 
+        routerLink="/products" 
+        class="flex items-center mx-auto glass-button-secondary px-6 py-3 rounded-xl"
+      >
+        <span class="text-xl mr-2">←</span>
+        Seguir Comprando
+      </button>
     </div>
 
     <!-- Si hay ítems en la venta -->
-    <div *ngIf="cartItems.length > 0; else noSale">
-      <div class="flex flex-wrap justify-center gap-6 lg:gap-8">
-        <div *ngFor="let item of cartItems" class="product-card flex-shrink-0 w-72">
-          <!-- Imagen -->
-          <div class="product-image">
-            <img *ngIf="item.imagen; else noImage" [src]="item.imagen" [alt]="item.nombre"/>
-            <ng-template #noImage>
-              <div class="no-image">📦</div>
-            </ng-template>
+    <div *ngIf="cartItems.length > 0; else noSale" class="space-y-8">
+      
+      <!-- Resumen simple de la compra -->
+      <div class="glass-card max-w-2xl mx-auto">
+        <h3 class="text-2xl font-bold text-white text-center mb-6">
+          Resumen de tu Compra
+        </h3>
+        
+        <!-- Lista de productos -->
+        <div class="space-y-3 mb-6">
+          <div 
+            *ngFor="let item of cartItems; trackBy: trackByItemId" 
+            class="flex justify-between items-center py-2 border-b border-white/10"
+          >
+            <div class="flex items-center space-x-3">
+              <span class="text-white/60">📦</span>
+              <span class="text-white">{{ item.nombre }} x{{ item.cantidad }}</span>
+            </div>
+            <span class="text-green-400 font-semibold">
+              ${{ (item.precio * item.cantidad) | number:'1.0-0' }}
+            </span>
           </div>
-          <!-- Detalle -->
-          <div class="product-content">
-            <h3 class="product-title">{{ item.nombre }}</h3>
-            <p class="product-description line-clamp-2">{{ item.descripcion }}</p>
-            <div class="mt-2 font-semibold">
-              Cantidad: {{ item.cantidad }} × ${{ item.precio | number:'1.0-0' }}
-            </div>
-            <div class="mt-1 text-lg font-bold">
-              Subtotal: ${{ (item.precio * item.cantidad) | number:'1.0-0' }}
-            </div>
+        </div>
+
+        <!-- Totales -->
+        <div class="space-y-2 pt-4 border-t border-white/20">
+          <div class="flex justify-between items-center">
+            <span class="text-white/70">Subtotal:</span>
+            <span class="text-white font-semibold">${{ getTotal() | number:'1.0-0' }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-white/70">IVA (19%):</span>
+            <span class="text-white font-semibold">${{ (getTotal() * 0.19) | number:'1.0-0' }}</span>
+          </div>
+          <div class="flex justify-between items-center text-lg font-bold border-t border-white/20 pt-2">
+            <span class="text-white">TOTAL:</span>
+            <span class="text-green-400">${{ (getTotal() * 1.19) | number:'1.0-0' }}</span>
           </div>
         </div>
       </div>
 
-      <!-- Total y volver a productos -->
-      <div class="mt-12 flex flex-col lg:flex-row justify-center lg:justify-end items-center space-y-4 lg:space-y-0 lg:space-x-6">
-        <div class="text-2xl font-bold">
-          Total Pagado: ${{ getTotal() | number:'1.0-0' }}
+      <!-- Mensaje de agradecimiento -->
+      <div class="text-center py-12">
+        <div class="glass-card bg-gradient-to-r from-green-500/20 to-emerald-500/20 border-green-500/30">
+          <div class="flex items-center justify-center mb-4">
+            <span class="text-3xl mr-3">❤️</span>
+            <h3 class="text-2xl font-bold text-white">¡Gracias por elegirnos!</h3>
+          </div>
+          <p class="text-white/80 text-lg mb-6">
+            Tu pedido será procesado y enviado pronto. Te notificaremos cuando esté en camino.
+          </p>
+          <div class="flex items-center justify-center space-x-2">
+            <span class="text-2xl">⭐</span>
+            <span class="text-white/70">¡Esperamos verte pronto!</span>
+            <span class="text-2xl">⭐</span>
+          </div>
         </div>
-        <button routerLink="/products" class="add-button">
-          Seguir Comprando
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
+        <button 
+          routerLink="/products"
+          class="flex items-center space-x-2 glass-button-primary text-lg font-bold py-4 px-8 rounded-2xl transition-all duration-300 hover:scale-105"
+        >
+          <span class="text-xl">🛍️</span>
+          <span>Continuar Comprando</span>
+        </button>
+        
+        <button 
+          routerLink="/dashboard"
+          class="flex items-center space-x-2 glass-button-secondary text-lg font-bold py-4 px-8 rounded-2xl transition-all duration-300"
+        >
+          <span>Ver Mi Cuenta</span>
         </button>
       </div>
     </div>
 
     <!-- Estado sin ventas -->
     <ng-template #noSale>
-      <div class="empty-state text-center py-20">
-        <div class="empty-icon text-6xl mb-4">✅</div>
-        <h3 class="text-2xl font-semibold text-white mb-2">No hay venta registrada</h3>
-        <p class="text-white/60 mb-6">Realiza primero una compra.</p>
-        <button routerLink="/products" class="add-button mt-4 mx-auto block">
-          Ver Productos
+      <div class="text-center py-20">
+        <div class="mb-8">
+          <span class="text-8xl text-white/50">✅</span>
+        </div>
+        <h3 class="text-3xl font-bold text-white mb-4">No hay venta registrada</h3>
+        <p class="text-xl text-white/70 mb-8 max-w-md mx-auto">
+          Realiza primero una compra para ver el detalle aquí.
+        </p>
+        <button 
+          routerLink="/products" 
+          class="glass-button-primary text-lg font-bold py-4 px-8 rounded-2xl transition-all duration-300 hover:scale-105"
+        >
+          Explorar Productos
         </button>
       </div>
     </ng-template>
