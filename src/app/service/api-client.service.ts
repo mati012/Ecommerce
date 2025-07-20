@@ -9,13 +9,8 @@ export class ApiClientService {
     return (window as any)?.env?.[key];
   }
 
-  // get baseUrl(): string {
-  //   return this.getEnvVar('API_BASE_URL') || 'https://97mnvqtra8.execute-api.us-east-1.amazonaws.com/DEV/';
-  // }
-
-
   get baseUrl(): string {
-    return this.getEnvVar('API_BASE_URL') || "http://localhost:8082";
+    return this.getEnvVar('API_BASE_URL') || 'https://97mnvqtra8.execute-api.us-east-1.amazonaws.com/DEV/';
   }
 
   get endpoints() {
