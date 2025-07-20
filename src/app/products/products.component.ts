@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule, Router } from '@angular/router';
 import { DefaultBackendService } from '../service/default-backend.service';
 
 interface Product {
@@ -11,10 +12,14 @@ interface Product {
   categoria?: string;
 }
 
+interface CartItem extends Product {
+  cantidad: number;
+}
+
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css'],
   styles: [`
@@ -32,7 +37,7 @@ export class ProductsComponent implements OnInit {
   hasError = false;
   errorMessage: string | null = null;
 
-  constructor(private backendService: DefaultBackendService) {}
+  constructor(private backendService: DefaultBackendService,private router: Router) {}
 
   ngOnInit(): void {
     this.loadProducts();
@@ -67,7 +72,25 @@ export class ProductsComponent implements OnInit {
   }
 
   handleAddToCart(product: Product): void {
-    console.log('Agregado al carrito:', product);
-    // Aquí integrarás con el servicio del carrito más adelante
+    // Recupera el carrito actual desde localStorage (o un array vacío si no existe)
+    const cart: CartItem[] = JSON.parse(localStorage.getItem('cart') || '[]');
+
+    // Busca si el producto ya está en el carrito
+    const existing = cart.find(item => item.id === product.id);
+    if (existing) {
+      // Si existe, aumenta la cantidad
+      existing.cantidad++;
+    } else {
+      // Si no, lo añade con cantidad inicial de 1
+      cart.push({ ...product, cantidad: 1 });
+    }
+
+    // Guarda de nuevo el carrito en localStorage
+    localStorage.setItem('cart', JSON.stringify(cart));
+    console.log('Carrito actualizado:', cart);
+  }
+
+  goToCart(): void {
+    this.router.navigate(['/carrito']);
   }
 } 

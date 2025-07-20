@@ -36,6 +36,7 @@
     "@angular-devkit/build-angular": "^18.0.1",
     "@angular/cli": "^18.0.1",
     "@angular/compiler-cli": "^18.0.0",
+    "@rollup/rollup-darwin-arm64": "^4.42.0",
     "@types/jasmine": "~5.1.0",
     "@types/jest": "^29.5.12",
     "@types/jwt-decode": "^2.2.1",

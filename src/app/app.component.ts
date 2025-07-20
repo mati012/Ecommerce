@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import {
   MsalService,
   MsalModule,
@@ -50,7 +50,8 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
     private authService: MsalService,
-    private msalBroadcastService: MsalBroadcastService
+    private msalBroadcastService: MsalBroadcastService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -332,6 +333,18 @@ export class AppComponent implements OnInit, OnDestroy {
     } else {
       this.authService.logoutRedirect();
     }
+  }
+
+  getCartCount(): number {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    return Array.isArray(cart)
+      ? cart.reduce((sum: number, item: { cantidad: number }) => sum + item.cantidad, 0)
+      : 0;
+  }
+
+  /** Navega a la vista del carrito */
+  goToCart(): void {
+    this.router.navigate(['/carrito']);
   }
 
   /**

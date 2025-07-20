@@ -1,0 +1,61 @@
+<div class="products-container">
+  <div class="products-content">
+    <!-- Header de la venta -->
+    <div class="products-header text-center mb-16">
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4">
+        Detalle de la Venta
+      </h1>
+      <p class="text-xl text-white/60 max-w-3xl mx-auto">
+        Gracias por tu compra. Aquí los productos adquiridos:
+      </p>
+    </div>
+
+    <!-- Si hay ítems en la venta -->
+    <div *ngIf="cartItems.length > 0; else noSale">
+      <div class="flex flex-wrap justify-center gap-6 lg:gap-8">
+        <div *ngFor="let item of cartItems" class="product-card flex-shrink-0 w-72">
+          <!-- Imagen -->
+          <div class="product-image">
+            <img *ngIf="item.imagen; else noImage" [src]="item.imagen" [alt]="item.nombre"/>
+            <ng-template #noImage>
+              <div class="no-image">📦</div>
+            </ng-template>
+          </div>
+          <!-- Detalle -->
+          <div class="product-content">
+            <h3 class="product-title">{{ item.nombre }}</h3>
+            <p class="product-description line-clamp-2">{{ item.descripcion }}</p>
+            <div class="mt-2 font-semibold">
+              Cantidad: {{ item.cantidad }} × ${{ item.precio | number:'1.0-0' }}
+            </div>
+            <div class="mt-1 text-lg font-bold">
+              Subtotal: ${{ (item.precio * item.cantidad) | number:'1.0-0' }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total y volver a productos -->
+      <div class="mt-12 flex flex-col lg:flex-row justify-center lg:justify-end items-center space-y-4 lg:space-y-0 lg:space-x-6">
+        <div class="text-2xl font-bold">
+          Total Pagado: ${{ getTotal() | number:'1.0-0' }}
+        </div>
+        <button routerLink="/products" class="add-button">
+          Seguir Comprando
+        </button>
+      </div>
+    </div>
+
+    <!-- Estado sin ventas -->
+    <ng-template #noSale>
+      <div class="empty-state text-center py-20">
+        <div class="empty-icon text-6xl mb-4">✅</div>
+        <h3 class="text-2xl font-semibold text-white mb-2">No hay venta registrada</h3>
+        <p class="text-white/60 mb-6">Realiza primero una compra.</p>
+        <button routerLink="/products" class="add-button mt-4 mx-auto block">
+          Ver Productos
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>

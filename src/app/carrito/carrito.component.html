@@ -1,0 +1,81 @@
+<div class="products-container">
+  <div class="products-content">
+    <!-- Header del carrito -->
+    <div class="products-header">
+      <h1>Tu Carrito de Compras</h1>
+      <p>Revisa y gestiona los productos seleccionados antes de finalizar tu compra</p>
+    </div>
+
+    <!-- Si hay ítems en el carrito -->
+    <div *ngIf="cartItems.length > 0; else emptyCart">
+  <!-- Contenedor flex centrado -->
+  <div class="flex flex-wrap justify-center gap-6 lg:gap-8">
+    <div
+      *ngFor="let item of cartItems"
+      class="product-card flex-shrink-0 w-72"
+    >
+      <!-- Imagen del producto -->
+      <div class="product-image">
+        <img
+          *ngIf="item.imagen; else noImage"
+          [src]="item.imagen"
+          [alt]="item.nombre"
+        />
+        <ng-template #noImage>
+          <div class="no-image">📦</div>
+        </ng-template>
+      </div>
+
+      <!-- Detalle del producto -->
+      <div class="product-content">
+        <h3 class="product-title">{{ item.nombre }}</h3>
+        <p class="product-description line-clamp-2">
+          {{ item.descripcion }}
+        </p>
+
+        <div class="product-footer">
+          <div>
+            <span class="product-price">
+              ${{ item.precio | number:'1.0-0' }}
+            </span>
+            <span class="mx-2">x {{ item.cantidad }}</span>
+          </div>
+          <button (click)="removeFromCart(item)" class="add-button">
+            🗑️ Quitar
+          </button>
+        </div>
+
+        <div class="mt-2 font-semibold">
+          Subtotal: ${{ (item.precio * item.cantidad) | number:'1.0-0' }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Total y botón de checkout -->
+  <div class="mt-8 flex justify-end items-center space-x-6">
+    <div class="text-xl font-bold">
+      Total: ${{ getTotal() | number:'1.0-0' }}
+    </div>
+    <button (click)="checkout()" class="add-button">
+      Finalizar Compra
+    </button>
+  </div>
+</div>
+
+    <!-- Estado vacío -->
+    <ng-template #emptyCart>
+      <div class="empty-state text-center">
+        <div class="empty-icon">🛒</div>
+        <h3>Tu carrito está vacío</h3>
+        <p>Añade productos para comenzar.</p>
+        <button
+          routerLink="/products"
+          class="add-button mt-4 mx-auto block"
+        >
+          Ver Productos
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>
