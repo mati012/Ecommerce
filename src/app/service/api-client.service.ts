@@ -16,7 +16,7 @@ export class ApiClientService {
   get endpoints() {
     return {
       productos: `${this.baseUrl}${this.getEnvVar('ENDPOINT_PRODUCTOS') || '/productos'}`,
-      detalleVenta: `${this.baseUrl}${this.getEnvVar('ENDPOINT_DETALLE_VENTA') || '/api/kafka/detalleVenta'}`,
+      detalleVenta: `${this.baseUrl}${this.getEnvVar('ENDPOINT_DETALLE_VENTA') || 'api/kafka/detalleVenta'}`,
       auth: `${this.baseUrl}${this.getEnvVar('ENDPOINT_AUTH') || '/auth'}`,
       users: `${this.baseUrl}${this.getEnvVar('ENDPOINT_USERS') || '/users'}`,
       base: this.baseUrl
